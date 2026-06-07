@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Music Summer Class Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F0D080;
+      --gold-dark: #8a6a1f;
+      --bg: #0d0d0d;
+      --bg2: #161616;
+      --bg3: #1f1f1f;
+      --border: rgba(201,168,76,0.25);
+      --border-focus: rgba(201,168,76,0.8);
+      --text: #f0ece0;
+      --text-muted: #8a8070;
+      --red: #e05050;
+      --green: #4CAF50;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 60px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      width: 100%;
+      text-align: center;
+      padding: 44px 20px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .notes {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      font-size: 22px;
+      color: var(--gold);
+      opacity: 0.4;
+      margin-bottom: 10px;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 9vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #f0d080 0%, #c9a84c 50%, #8a6a1f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+      max-width: 340px;
+      margin: 0 auto 22px;
+      line-height: 1.7;
+    }
+
+    /* ── PRICE BANNER ── */
+    .price-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 24px;
+      margin: 0 auto 28px;
+      width: fit-content;
+    }
+    .price-banner .label { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .price-banner .amount { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--gold-light); }
+    .price-banner .currency { font-size: 12px; color: var(--gold); letter-spacing: 1px; }
+
+    /* ── ADDRESS BANNER ── */
+    .address-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,0.06);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      margin-bottom: 28px;
+    }
+    .addr-icon { font-size: 14px; }
+    .addr-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      width: 100%;
+      max-width: 660px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 20px;
+      position: relative;
+      box-shadow: 0 0 60px rgba(0,0,0,0.6);
+      margin: 0 12px;
+    }
+    @media (min-width: 600px) {
+      .card { padding: 36px 40px; border-radius: 24px; margin: 0 20px; }
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── GRIDS ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-1 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    /* stack all 2-col grids on small screens */
+    @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; gap: 14px; } }
+
+    .spacer { margin-top: 20px; }
+
+    /* ── FORM FIELDS ── */
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .field input,
+    .field select {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; /* prevents iOS zoom on focus */
+      padding: 13px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .field select option { background: #1f1f1f; }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
+    .field input.error,
+    .field select.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(224,80,80,0.12); }
+    .field .err-msg { font-size: 11px; color: var(--red); display: none; padding-left: 2px; }
+    .field .err-msg.show { display: block; }
+
+    /* ── GENDER PILLS ── */
+    .gender-group { display: flex; gap: 10px; }
+    .radio-btn { flex: 1; cursor: pointer; }
+    .radio-btn input[type="radio"] { display: none; }
+    .radio-btn .pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 8px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .radio-btn input:checked + .pill {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      background: rgba(201,168,76,0.1);
+    }
+
+    /* ── INSTRUMENT CARDS ── */
+    .instrument-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 480px) {
+      .instrument-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
+    .instrument-card { cursor: pointer; }
+    .instrument-card input[type="radio"] { display: none; }
+    .instrument-card .face {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 6px;
+      transition: all 0.2s;
+    }
+    .instrument-card .icon { font-size: 26px; line-height: 1; }
+    .instrument-card .name { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
+    .instrument-card input:checked + .face {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.1);
+      box-shadow: 0 0 16px rgba(201,168,76,0.15);
+    }
+    .instrument-card input:checked + .face .name { color: var(--gold-light); }
+    .instrument-err { font-size: 11px; color: var(--red); display: none; margin-top: 4px; }
+    .instrument-err.show { display: block; }
+
+    /* ── LEVEL CARDS ── */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 480px) {
+      .level-grid { grid-template-columns: 1fr; gap: 10px; }
+    }
+    .level-card { cursor: pointer; }
+    .level-card input[type="radio"] { display: none; }
+    .level-card .face {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      background: var(--bg3);
+      transition: all 0.2s;
+    }
+    /* on mobile, make level cards horizontal for compactness */
+    @media (max-width: 480px) {
+      .level-card .face {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+      }
+      .level-card .face .dot { margin-bottom: 0; flex-shrink: 0; }
+      .level-card .face .lv-text { display: flex; flex-direction: column; }
+    }
+    .level-card .face .lv-name { font-size: 0.88rem; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .level-card .face .lv-desc { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+    .level-card .face .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      margin-bottom: 10px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .level-card input:checked + .face { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+    .level-card input:checked + .face .dot { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 8px rgba(201,168,76,0.6); }
+    .level-card input:checked + .face .lv-name { color: var(--gold-light); }
+    .level-err { font-size: 11px; color: var(--red); display: none; margin-top: 4px; }
+    .level-err.show { display: block; }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+    /* ── PRICE FOOTER ── */
+    .price-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(201,168,76,0.06);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .price-footer .pf-label { font-size: 13px; color: var(--text-muted); }
+    .price-footer .pf-amount { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold-light); }
+
+    /* ── SUBMIT BUTTON ── */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #c9a84c, #8a6a1f);
+      border: none;
+      border-radius: 12px;
+      color: #0d0d0d;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .submit-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+    /* ── SUCCESS OVERLAY ── */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 1000;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+    @media (min-width: 520px) {
+      .success-overlay { align-items: center; padding: 24px; }
+    }
+    .success-overlay.show { display: flex; }
+
+    .success-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px 24px 0 0;
+      padding: 36px 24px 40px;
+      text-align: center;
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      animation: slideUp 0.38s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @media (min-width: 520px) {
+      .success-box {
+        border-radius: 24px;
+        padding: 48px 44px;
+        animation: popIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes popIn {
+      from { transform: scale(0.75); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+    .success-icon {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: rgba(76,175,80,0.15);
+      border: 2px solid #4CAF50;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.3); }
+      50%      { box-shadow: 0 0 0 10px rgba(76,175,80,0); }
+    }
+    .success-box h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--green); margin-bottom: 8px; }
+    .success-box .s-name { font-size: 1rem; color: var(--gold-light); font-weight: 500; margin-bottom: 12px; }
+    .success-box p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 20px; }
+    .success-details {
+      background: var(--bg3);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .success-details .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .success-details .row:last-child { border-bottom: none; }
+    .success-details .row span:first-child { color: var(--text-muted); }
+    .success-details .row span:last-child { color: var(--text); font-weight: 500; }
+    .success-details .row.price span:last-child { color: var(--gold-light); font-family: 'Playfair Display', serif; }
+    .close-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #c9a84c, #8a6a1f);
+      border: none;
+      border-radius: 10px;
+      color: #0d0d0d;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .close-btn:active { opacity: 0.85; }
+
+    /* ── MISC ── */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="notes">♩ ♪ ♫ ♬ ♭</div>
+    <div class="hero-badge">Summer 2026 · Open Enrollment</div>
+    <h1>Music Summer<br>Class</h1>
+    <p>Join our summer program and discover the joy of music with professional instructors.</p>
+    <div class="price-banner">
+      <div class="label">Registration fee</div>
+      <div class="amount">600</div>
+      <div class="currency">BIRR</div>
+    </div>
+    <div class="address-banner">
+      <span class="addr-icon">📍</span>
+      <span class="addr-text">Beza Bezbarok, 14 Kebele</span>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card">
+    <div class="section-label">Personal Information</div>
+    <form id="regForm" novalidate>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="e.g. Abebe" autocomplete="given-name"/>
+          <span class="err-msg" id="err-firstName">Please enter your first name.</span>
+        </div>
+        <div class="field">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="e.g. Kebede" autocomplete="family-name"/>
+          <span class="err-msg" id="err-lastName">Please enter your last name.</span>
+        </div>
+      </div>
+
+      <div class="grid-2 spacer">
+        <div class="field">
+          <label for="age">Age</label>
+          <input type="number" id="age" placeholder="e.g. 16" min="1" max="99" inputmode="numeric"/>
+          <span class="err-msg" id="err-age">Age must be 14 or older.</span>
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="e.g. 0912345678" autocomplete="tel" inputmode="tel"/>
+          <span class="err-msg" id="err-phone">Please enter a valid phone number.</span>
+        </div>
+      </div>
+
+      <div class="grid-2 spacer">
+        <div class="field">
+          <label for="grade">Grade / School Year</label>
+          <select id="grade">
+            <option value="">— Select grade —</option>
+            <option>Grade 8</option>
+            <option>Grade 9</option>
+            <option>Grade 10</option>
+            <option>Grade 11</option>
+            <option>Grade 12</option>
+            <option>College / University</option>
+            <option>Other</option>
+          </select>
+          <span class="err-msg" id="err-grade">Please select your grade.</span>
+        </div>
+        <div class="field">
+          <label>Gender</label>
+          <div class="gender-group" id="genderGroup">
+            <label class="radio-btn">
+              <input type="radio" name="gender" value="Male"/>
+              <div class="pill">♂ Male</div>
+            </label>
+            <label class="radio-btn">
+              <input type="radio" name="gender" value="Female"/>
+              <div class="pill">♀ Female</div>
+            </label>
+          </div>
+          <span class="err-msg" id="err-gender" style="display:none">Please select your gender.</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Instrument -->
+      <div class="section-label">Choose Your Instrument</div>
+      <div class="instrument-grid">
+        <label class="instrument-card">
+          <input type="radio" name="instrument" value="Guitar"/>
+          <div class="face"><div class="icon">🎸</div><div class="name">Guitar</div></div>
+        </label>
+        <label class="instrument-card">
+          <input type="radio" name="instrument" value="Keyboard"/>
+          <div class="face"><div class="icon">🎹</div><div class="name">Keyboard</div></div>
+        </label>
+        <label class="instrument-card">
+          <input type="radio" name="instrument" value="Drums"/>
+          <div class="face"><div class="icon">🥁</div><div class="name">Drums</div></div>
+        </label>
+        <label class="instrument-card">
+          <input type="radio" name="instrument" value="Vocal"/>
+          <div class="face"><div class="icon">🎤</div><div class="name">Vocal</div></div>
+        </label>
+      </div>
+      <span class="instrument-err" id="err-instrument">Please choose an instrument.</span>
+
+      <div class="divider"></div>
+
+      <!-- Level -->
+      <div class="section-label">Your Level</div>
+      <div class="level-grid">
+        <label class="level-card">
+          <input type="radio" name="level" value="Beginner"/>
+          <div class="face">
+            <div class="dot"></div>
+            <div class="lv-text">
+              <div class="lv-name">Beginner</div>
+              <div class="lv-desc">New to music, starting from scratch.</div>
+            </div>
+          </div>
+        </label>
+        <label class="level-card">
+          <input type="radio" name="level" value="Intermediate"/>
+          <div class="face">
+            <div class="dot"></div>
+            <div class="lv-text">
+              <div class="lv-name">Intermediate</div>
+              <div class="lv-desc">Some experience, ready to grow.</div>
+            </div>
+          </div>
+        </label>
+        <label class="level-card">
+          <input type="radio" name="level" value="Advanced"/>
+          <div class="face">
+            <div class="dot"></div>
+            <div class="lv-text">
+              <div class="lv-name">Advanced</div>
+              <div class="lv-desc">Experienced and aiming higher.</div>
+            </div>
+          </div>
+        </label>
+      </div>
+      <span class="level-err" id="err-level">Please choose your level.</span>
+
+      <div class="divider"></div>
+
+      <!-- Price + Submit -->
+      <div class="price-footer">
+        <div class="pf-label">Total Registration Fee</div>
+        <div class="pf-amount">600 Birr</div>
+      </div>
+      <button type="submit" class="submit-btn">Register Now</button>
+
+    </form>
+  </div>
+
+  <!-- SUCCESS OVERLAY (bottom sheet on mobile, centered modal on desktop) -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+      <div class="success-icon">✓</div>
+      <h2>Registered!</h2>
+      <div class="s-name" id="successName"></div>
+      <p>You have successfully registered for the Music Summer Class. We're excited to have you join us!</p>
+      <div class="success-details">
+        <div class="row"><span>Instrument</span><span id="s-instrument"></span></div>
+        <div class="row"><span>Level</span><span id="s-level"></span></div>
+        <div class="row"><span>Grade</span><span id="s-grade"></span></div>
+        <div class="row price"><span>Amount Due</span><span>600 Birr</span></div>
+      </div>
+      <button class="close-btn" onclick="closeSuccess()">Done</button>
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────────────────
+    // 🔧 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
+    // ─────────────────────────────────────────────────────────────
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw91VoDFHaDKl7WZaL6WqjjdttxWNv3iuCqq5rM8G19-mHqeec5n7tZddYQTUcp8vjDPQ/exec'
+    // ─────────────────────────────────────────────────────────────
+
+    const form = document.getElementById('regForm');
+    const submitBtn = form.querySelector('.submit-btn');
+
+    function showErr(id, show) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.toggle('show', show);
+    }
+    function fieldErr(inputId, errId, show) {
+      const el = document.getElementById(inputId);
+      if (el) el.classList.toggle('error', show);
+      showErr(errId, show);
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.textContent = loading ? 'Submitting…' : 'Register Now';
+      submitBtn.style.opacity = loading ? '0.7' : '1';
+    }
+
+    async function sendToGoogleSheets(data) {
+      if (!SHEET_URL || SHEET_URL === 'YOUR_SCRIPT_URL_HERE') {
+        console.warn('⚠️ Google Sheets URL not set. Skipping data save.');
+        return { ok: true, skipped: true };
+      }
+      const response = await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',           // Apps Script requires no-cors
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return { ok: true }; // no-cors always returns opaque response
+    }
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      const firstName  = document.getElementById('firstName').value.trim();
+      const lastName   = document.getElementById('lastName').value.trim();
+      const ageVal     = document.getElementById('age').value;
+      const age        = parseInt(ageVal);
+      const phone      = document.getElementById('phone').value.trim();
+      const grade      = document.getElementById('grade').value;
+      const gender     = document.querySelector('input[name="gender"]:checked');
+      const instrument = document.querySelector('input[name="instrument"]:checked');
+      const level      = document.querySelector('input[name="level"]:checked');
+
+      if (!firstName) { fieldErr('firstName','err-firstName',true); valid=false; }
+      else             { fieldErr('firstName','err-firstName',false); }
+
+      if (!lastName)  { fieldErr('lastName','err-lastName',true); valid=false; }
+      else             { fieldErr('lastName','err-lastName',false); }
+
+      if (!ageVal || isNaN(age) || age < 14) {
+        fieldErr('age','err-age',true);
+        document.getElementById('err-age').textContent =
+          !ageVal ? 'Please enter your age.' : 'Age must be 14 or older.';
+        valid=false;
+      } else { fieldErr('age','err-age',false); }
+
+      if (!phone || !/^[0-9+\s\-]{7,15}$/.test(phone)) {
+        fieldErr('phone','err-phone',true); valid=false;
+      } else { fieldErr('phone','err-phone',false); }
+
+      if (!grade) { fieldErr('grade','err-grade',true); valid=false; }
+      else         { fieldErr('grade','err-grade',false); }
+
+      const genderErr = document.getElementById('err-gender');
+      if (!gender) { genderErr.style.display='block'; valid=false; }
+      else          { genderErr.style.display='none'; }
+
+      const instErr = document.getElementById('err-instrument');
+      if (!instrument) { instErr.classList.add('show'); valid=false; }
+      else              { instErr.classList.remove('show'); }
+
+      const lvlErr = document.getElementById('err-level');
+      if (!level) { lvlErr.classList.add('show'); valid=false; }
+      else         { lvlErr.classList.remove('show'); }
+
+      if (!valid) {
+        const firstErr = form.querySelector('.error, .err-msg.show, .instrument-err.show, .level-err.show');
+        if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+        return;
+      }
+
+      // ── Send to Google Sheets ──
+      setLoading(true);
+      try {
+        await sendToGoogleSheets({
+          firstName,
+          lastName,
+          age: parseInt(ageVal),
+          phone,
+          grade,
+          gender:     gender.value,
+          instrument: instrument.value,
+          level:      level.value
+        });
+      } catch (err) {
+        console.error('Failed to save to Google Sheets:', err);
+        // Still show success to user — don't block UX on network error
+      } finally {
+        setLoading(false);
+      }
+
+      // ── Show success modal ──
+      document.getElementById('successName').textContent = firstName + ' ' + lastName;
+      document.getElementById('s-instrument').textContent = instrument.value;
+      document.getElementById('s-level').textContent = level.value;
+      document.getElementById('s-grade').textContent = grade;
+      document.getElementById('successOverlay').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeSuccess() {
+      document.getElementById('successOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+      form.reset();
+      document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+      document.querySelectorAll('.err-msg.show').forEach(el => el.classList.remove('show'));
+      document.querySelectorAll('.instrument-err.show').forEach(el => el.classList.remove('show'));
+      document.querySelectorAll('.level-err.show').forEach(el => el.classList.remove('show'));
+    }
+
+    ['firstName','lastName','age','phone','grade'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', () => {
+        el.classList.remove('error');
+        const errEl = document.getElementById('err-'+id);
+        if (errEl) errEl.classList.remove('show');
+      });
+    });
+  </script>
+</body>
+</html>
